@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const tokenModel = require('../models/token-model');
+import jwt from 'jsonwebtoken';
+import tokenModel from '../models/token-model.js';
 
 class TokenService {
     generateTokens(payload) {
@@ -50,4 +50,4 @@ class TokenService {
     }
 }
 
-module.exports = new TokenService();
+export default new TokenService();
