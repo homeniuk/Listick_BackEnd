@@ -2,12 +2,12 @@ import { body, validationResult } from 'express-validator';
 
 //User
 export const registerValidation = [
-    body('email', 'Неверный формат почты').isEmail(),
-    body('password', 'Пароль должен быть минимум 6 символов').isLength({min: 6, max: 32}),
+    body('email', 'Invalid mail format').isEmail(),
+    body('password', 'Password must be at least 6 characters').isLength({min: 6, max: 32}),
 ];
 export const loginValidation = [
-    body('email', 'Неверный формат почты').isEmail(),
-    body('password', 'Пароль должен быть минимум 6 символов').isLength({ min: 6 }),
+    body('email', 'Invalid mail format').isEmail(),
+    body('password', 'Password must be at least 6 characters').isLength({ min: 6, max: 32 }),
 ];
 
 export const validationRes = (req, res, next) => {
