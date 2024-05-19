@@ -15,7 +15,10 @@ export const saveListickVal = [
   body('top', 'top is required').isInt(),
   body('left', 'left is required').isInt(),
   body('text', 'text is required').isString(),
-  //body('password', 'Password must be at least 6 characters').isLength({ min: 6, max: 32 }),
+];
+
+export const deleteListickVal = [
+  query('id', 'id is required').notEmpty()(),
 ];
 
 export const validationRes = (req, res, next) => {

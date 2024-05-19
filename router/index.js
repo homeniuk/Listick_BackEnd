@@ -3,7 +3,7 @@ import userController from '../controllers/user-controller.js';
 import ListickController from '../controllers/listick-controller.js';
 import authMiddleware from '../middlewares/auth-middleware.js';
 import {registerValidation, loginValidation, 
-    saveListickVal, 
+    saveListickVal, deleteListickVal,
     validationRes} from '../validations/validations.js';
 
 const router = new Router();
@@ -15,9 +15,9 @@ router.get('/logout',                                           userController.l
 router.get('/refresh',                                          userController.refresh);
 router.get('/users',         authMiddleware,                    userController.getUsers);
 
-router.get('/getAllListicks',authMiddleware,                                    ListickController.getAllListicks);
-router.post('/saveListick',  authMiddleware,   saveListickVal, validationRes,   ListickController.saveListick);
-router.delete('/deleteListick',authMiddleware,                  ListickController.deleteListick);
+router.get('/getAllListicks',  authMiddleware,                                  ListickController.getAllListicks);
+router.post('/saveListick',    authMiddleware, saveListickVal,  validationRes,  ListickController.saveListick);
+router.delete('/deleteListick',authMiddleware, deleteListickVal,validationRes,  ListickController.deleteListick);
 
 
 export default router;
