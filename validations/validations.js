@@ -10,6 +10,14 @@ export const loginValidation = [
     body('password', 'Password must be at least 6 characters').isLength({ min: 6, max: 32 }),
 ];
 
+export const saveListickVal = [
+  body('id', 'id is required').isInt(),
+  body('top', 'top is required').isInt(),
+  body('left', 'left is required').isInt(),
+  body('text', 'text is required').isString(),
+  //body('password', 'Password must be at least 6 characters').isLength({ min: 6, max: 32 }),
+];
+
 export const validationRes = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
