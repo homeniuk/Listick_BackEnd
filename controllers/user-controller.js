@@ -3,6 +3,9 @@ import bcrypt from 'bcrypt';
 //import { v4 as uuidv4 } from 'uuid';
 import tokenService from '../service/token-service.js';
 
+const configCookie = {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'none', secure: true};
+
+
 class UserController {
     async registration(req, res, next) {
         try {
@@ -17,7 +20,7 @@ class UserController {
             const UserData = {email: user.email, id: user._id};
             const tokens = tokenService.generateTokens({...UserData});
             await tokenService.saveToken(UserData.id, tokens.refreshToken);
-            res.cookie('refreshToken', tokens.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            res.cookie('refreshToken', tokens.refreshToken, configCookie)
             
             return res.json({accessToken: tokens.accessToken, user: UserData});
         } catch (e) {
@@ -40,8 +43,7 @@ class UserController {
             const UserData = {email: user.email, id: user._id};
             const tokens = tokenService.generateTokens({...UserData});
             await tokenService.saveToken(UserData.id, tokens.refreshToken);
-            res.cookie('refreshToken', tokens.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
-            
+            res.cookie('refreshToken', tokens.refreshToken, configCookie)
             return res.json({accessToken: tokens.accessToken, user: UserData});
         } catch (e) {
             next(e);
@@ -77,7 +79,7 @@ class UserController {
         }
     }
 
-    async refresh(req, res, next) {
+    async refreshtoken(req, res, next) {
         try {
             const {refreshToken} = req.cookies;
             if (!refreshToken) {
@@ -88,16 +90,25 @@ class UserController {
             if (!userData || !tokenFromDb) {
                 return res.status(401).json({message: 'User is not authorized'});
             }
+            const refreshTokenDB = tokenFromDb.refreshToken;
+            if (!refreshToken===refreshTokenDB){
+                return res.status(401).json({message: 'User is not authorized'});
+            }
             const user = await UserModel.findById(userData.id);
             const UserData = {email: user.email, id: user._id};
             const tokens = tokenService.generateTokens({...UserData});
             await tokenService.saveToken(UserData.id, tokens.refreshToken);
-            res.cookie('refreshToken', tokens.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
-            return res.json(userData);
+            res.cookie('refreshToken', tokens.refreshToken, configCookie)
+            return res.json({accessToken: tokens.accessToken, user: UserData});
         } catch (e) {
             next(e);
             //return res.status(500).json({message: 'Server error'});
         }
+    }
+    async getuser(req, res, next) {
+    	const accessToken = req.accessToken;
+        const UserData = {email: req.user.email, id: req.user.id};
+        return res.json({accessToken, user: UserData});
     }
 
     async getUsers(req, res, next) {

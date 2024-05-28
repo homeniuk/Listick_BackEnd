@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+import { body, query, validationResult } from 'express-validator';
 
 //User
 export const registerValidation = [
@@ -18,7 +18,7 @@ export const saveListickVal = [
 ];
 
 export const deleteListickVal = [
-  query('id', 'id is required').notEmpty()(),
+  query('id', 'id is required').notEmpty(),
 ];
 
 export const validationRes = (req, res, next) => {

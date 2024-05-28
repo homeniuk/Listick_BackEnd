@@ -39,7 +39,7 @@ export default function (err, req, res, next) {
           message: err.message,
         });
       default:
-        console.log("All good");
+        console.log("New error " + statusCode);
         break;
     }
 };  

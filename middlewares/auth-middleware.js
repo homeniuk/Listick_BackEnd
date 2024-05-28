@@ -18,6 +18,7 @@ export default function (req, res, next) {
         }
 
         req.user = userData;
+        req.accessToken = accessToken;
         next();
     } catch (e) {
         return res.status(401).json({message: 'You are not registered'});
