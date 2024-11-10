@@ -16,13 +16,13 @@ app.use(cookieParser());
 
 app.use(cors({
     credentials: true,
-    origin: 'https://listicks001.onrender.com'
-}));
-/*app.use(cors({
-    credentials: true,
     origin: process.env.CLIENT_URL
-}));*/
+}));
 app.use('/', router);
+app.get('/', (req, res) => {
+    res.send('It is back for listicks');
+  });
+
 app.use(errorMiddleware);
 
 const start = async () => {
